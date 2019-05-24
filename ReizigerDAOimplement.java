@@ -1,13 +1,13 @@
-package reiziger;
+package dao_implementatie;
 import java.sql.Date;
 import java.util.ArrayList;
 
-import reiziger.Reiziger;
+import dao_implementatie.Reiziger;
 
 public class ReizigerDAOimplement implements ReizigerDAO{
 	
    //list is working as a database
-	ArrayList<Reiziger> reizigers;
+	static ArrayList<Reiziger> reizigers;
    
    public ReizigerDAOimplement(){
 	      reizigers = new ArrayList<Reiziger>();
@@ -16,6 +16,7 @@ public class ReizigerDAOimplement implements ReizigerDAO{
 	      reizigers.add(reiziger1);
 	      reizigers.add(reiziger2);		
 	   }
+   
 	public ArrayList<Reiziger> findAll() {
 		return reizigers;
 	}

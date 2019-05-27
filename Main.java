@@ -1,115 +1,85 @@
-// Sebastiaan Jansen
-// Klas V1C
-
-//Opdracht P2
-
-
 package dao_implementatie;
 
-import java.sql.*;
-
-import dao_implementatie.OracleBaseDAO;
-import dao_implementatie.Reiziger;
-import dao_implementatie.ReizigerDAO;
-import dao_implementatie.ReizigerDAOimplement;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class Main {
-	   public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-		  
-		  //Hier is het gedeelte met reizigers.
-		   			  ReizigerDAO reizigerdao = new ReizigerDAOimplement();
+	public static void main(String[] args) {
+		try {
+			ReizigerOracleDaolmpl db = new ReizigerOracleDaolmpl();		
+			OvChipkaartOracleDaoLmpl dbo = new OvChipkaartOracleDaoLmpl();	
+			ProductOracleDaoLmpl dbp = new ProductOracleDaoLmpl();
+			
+			for (OvChipkaart ov : dbo.findByReiziger(2)) {
+				System.out.println(ov.getKaartNummer());
+			}
+			
+			Reiziger r1 = new Reiziger();
+			Reiziger r2 = new Reiziger();
+			Reiziger r3 = new Reiziger();
+			
+			Date datum1 = new SimpleDateFormat("dd/MM/yyyy").parse("17/04/2019");
+			r1.setNaam("S Echtelt");
+			r1.setGBdatum(datum1);
+			r1 = db.save(r1);
+			
+			r2.setNaam("T test");
+			r2 = db.save(r2);
 
-				      //Print alle reizigers.
-				      for (Reiziger reiziger : reizigerdao.findAll()) {
-				         System.out.println("Reiziger:"
-				         		+ "\n	Naam : " + reiziger.getNaam()
-				         		+ "\n	Geboortedatum : " + reiziger.getGbdatum()
-				         		+ "\n");
-				      }
-			
-			
-				      //Update de eerste reiziger.
-				      Reiziger reiziger1 = reizigerdao.findAll().get(0);
-				      reizigerdao.update(reiziger1);
-			
-				      //Print alle reizigers. (na update)
-				      for (Reiziger reiziger2 : reizigerdao.findAll()) {
-				    	  System.out.println("Reiziger:"
-					         		+ "\n	Naam : " + reiziger2.getNaam()
-					         		+ "\n	Geboortedatum : " + reiziger2.getGbdatum()
-					         		+ "\n");
-					      }	
-				      
-				      //Delete de eerste reiziger.
-				      Reiziger reiziger3 = reizigerdao.findAll().get(0);
-				      reizigerdao.delete(reiziger3);
-			
-				      //Print alle reizigers. (na delete)
-				      for (Reiziger reiziger4 : reizigerdao.findAll()) {
-				    	  System.out.println("Reiziger:"
-					         		+ "\n	Naam : " + reiziger4.getNaam()
-					         		+ "\n	Geboortedatum : " + reiziger4.getGbdatum()
-					         		+ "\n");
-					      }
-				      
-				      
-		  //Hier is het gedeelte met OV-chipkaarten.
-		   			  OVchipkaartDAO ovchipkaartdao = new OVchipkaartDAOimplement();
+			r3.setNaam("Y Test2");
+			r3 = db.save(r3);
 
-				      //Print alle OV-chipkaarten.
-				      for (OVchipkaart ovchipkaart : ovchipkaartdao.findAll()) {
-				         System.out.println("OV-chipkaart:"
-				         		+ "\n	Nummer : " + ovchipkaart.getKaartNummer()
-				         		+ "\n	Reiziger : " + ovchipkaart.getGbDatum()
-				         		+ "\n	Saldo : " + ovchipkaart.getSaldo()
-				         		+ "\n	Verloopt op : " + ovchipkaart.getGeldigTot()
-				         		+ "\n	Klasse : " + ovchipkaart.getKlasse()
-				         		+ "\n");
-				      }
+			for (Reiziger r : db.findAll()) {
+				System.out.println(r.getNaam());
+			}
+
+			System.out.println("all done");
 			
+			r1.setNaam("X Echtelt");
+			db.update(r1);
+
+			for (Reiziger r : db.findAllByGBdatum("03-12-2002")) {
+				System.out.println(r.getNaam());
+			}
+			System.out.println("by date done");
 			
-				      //Update de eerste OV-chipkaart.
-				      OVchipkaart ovchipkaart1 = ovchipkaartdao.findAll().get(0);
-				      ovchipkaartdao.update(ovchipkaart1);
+			db.delete(r3);
+			System.out.println("all done");
 			
-				      //Print alle OV-chipkaarten. (na update)
-				      for (OVchipkaart ovchipkaart2 : ovchipkaartdao.findAll()) {
-				         System.out.println("OV-chipkaart:"
-					         		+ "\n	Nummer : " + ovchipkaart2.getKaartNummer()
-					         		+ "\n	Reiziger : " + ovchipkaart2.getGbDatum()
-					         		+ "\n	Saldo : " + ovchipkaart2.getSaldo()
-					         		+ "\n	Verloopt op : " + ovchipkaart2.getGeldigTot()
-					         		+ "\n	Klasse : " + ovchipkaart2.getKlasse()
-					         		+ "\n");
-					      }
-				      
-				      //Delete de eerste OV-chipkaart.
-				      OVchipkaart ovchipkaart3 = ovchipkaartdao.findAll().get(0);
-				      ovchipkaartdao.delete(ovchipkaart3);
+			OvChipkaart o1 = new OvChipkaart();
+			o1.setKaartNummer(1231241);
+			o1.setKlasse(1);
+			o1.setReizigerId(2);
+			o1.setSaldo(11.11);
+			dbo.save(o1);
 			
-				      //Print alle OV-chipkaarten. (na delete)
-				      for (OVchipkaart ovchipkaart4 : ovchipkaartdao.findAll()) {
-				         System.out.println("OV-chipkaart:"
-					         		+ "\n	Nummer : " + ovchipkaart4.getKaartNummer()
-					         		+ "\n	Reiziger : " + ovchipkaart4.getGbDatum()
-					         		+ "\n	Saldo : " + ovchipkaart4.getSaldo()
-					         		+ "\n	Verloopt op : " + ovchipkaart4.getGeldigTot()
-					         		+ "\n	Klasse : " + ovchipkaart4.getKlasse()
-					         		+ "\n");
-					      }
-		  
-	      System.out.println("-----------------------------------------");
-	      System.out.println("-----------------------------------------");
-	      System.out.println("-----------------------------------------");
-	      
-	      //Instantieer een nieuwe OracleBase.
-		  OracleBaseDAO base = new OracleBaseDAO();
-		  //Maak een connectie met de database.
-	      Connection conn = base.getConnection();
-	      //Laat alle OV kaarten zien.
-	      base.showAllOV(conn);
-	      //Sluit de connectie.
-	      base.closeConnection(conn);
-	   }	
+			OvChipkaart o2 = new OvChipkaart();
+			o2.setKaartNummer(5678142);
+			o2.setKlasse(2);
+			o2.setReizigerId(2);
+			o2.setSaldo(83.11);
+			dbo.save(o2);
+			
+			Product product1 = new Product();
+			product1.setProductNaam("2test3");
+			product1.setBeschrijving("Dit is de beschrijving 1");
+			product1.setPrijs(50.2);
+			product1.setProductnummer(14);
+			dbp.save(product1);
+			
+			Product product2 = new Product();
+			product2.setProductNaam("1test4");
+			product2.setBeschrijving("Dit is de beschrijving 2");
+			product2.setPrijs(10.3);
+			product2.setProductnummer(15);
+			dbp.save(product2);
+			
+			dbo.linkProduct(o1, product1);
+			
+			System.out.println("done");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
 }
-	
